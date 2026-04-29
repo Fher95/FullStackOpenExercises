@@ -3,6 +3,7 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [filterValue, setFilterValue] = useState('');
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll()
@@ -35,6 +37,11 @@ const App = () => {
             setNewNumber('');
             setFilterValue('');
             setFilteredPersons(newList);
+            showNotification(true, `${response.name}'s number has been updated`);
+
+          })
+          .catch(error => {
+            showNotification(false, `Information of ${foundPerson.name} has already been removed from the server`);
           })
       }
     }
@@ -46,6 +53,7 @@ const App = () => {
           setFilteredPersons(newList);
           setNewName('');
           setNewNumber('');
+          showNotification(true, `Added ${response.name}`);
         })
     }
 
@@ -73,12 +81,24 @@ const App = () => {
         setPersons(filterList)
         setFilterValue('');
         setFilteredPersons(filterList);
+        showNotification(true, `Information of ${response.name} succesfully removed`);
       })
+      .catch(error => {
+        showNotification(false, `Information of ${person.name} has already been removed from the server`);
+      })
+  }
+
+  const showNotification = (success, message) => {
+    setNotificationMessage({ success, message });
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification notification={notificationMessage} ></Notification>
       <Filter filterValue={filterValue} handleFilterValue={handleFilterValue}></Filter>
       <h3>Add a new</h3>
       <PersonForm addName={addName} newNumber={newNumber} newName={newName} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}></PersonForm>
