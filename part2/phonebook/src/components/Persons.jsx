@@ -1,6 +1,13 @@
-const Persons = ({ persons }) => {
+const Persons = ({ persons, handleDeletePerson }) => {
+
+    const confirmDeletion = (person) => {
+        if (window.confirm(`Delete ${person.name} ?`)) {
+            handleDeletePerson(person);
+        }
+    }
+
     return (<div>
-        {persons.map((person, index) => <div key={index + 1}>{person.name} {person.number}</div>)}
+        {persons.map(person=> <div key={person.id}>{person.name} {person.number} <button onClick={() => confirmDeletion(person)} >delete</button></div>)}
     </div>)
 }
 
