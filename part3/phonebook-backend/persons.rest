@@ -1,18 +1,27 @@
-GET http://localhost:3002/api/persons
+GET http://localhost:3001/api/persons
 ###
-GET http://localhost:3002/api/info
+GET http://localhost:3001/api/info
 
 ###
-GET http://localhost:3002/api/persons/1
+GET http://localhost:3001/api/persons/1
 
 ###
-DELETE  http://localhost:3002/api/persons/1
+DELETE  http://localhost:3001/api/persons/69fb737047f1469d9785adc9
 
 ###
-POST http://localhost:3002/api/persons HTTP/1.1
+POST http://localhost:3001/api/persons HTTP/1.1
 Content-Type: application/json
 
 {
-    "name": "Allan Parsons",
-    "number": "543534"
+    "name": "Prueba",
+    "number": "543534-4343"
+}
+
+###
+PUT http://localhost:3001/api/persons/69fcab2fc38da39b41f82932 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Prueba",
+    "number": "23-3"
 }

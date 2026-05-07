@@ -38,10 +38,9 @@ const App = () => {
             setFilterValue('');
             setFilteredPersons(newList);
             showNotification(true, `${response.name}'s number has been updated`);
-
           })
           .catch(error => {
-            showNotification(false, `Information of ${foundPerson.name} has already been removed from the server`);
+            showNotification(false, error.response.data.error);
           })
       }
     }
@@ -55,6 +54,7 @@ const App = () => {
           setNewNumber('');
           showNotification(true, `Added ${response.name}`);
         })
+        .catch(err => showNotification(false, err.response.data.error))
     }
 
   }
@@ -77,6 +77,7 @@ const App = () => {
   const handleDeletePerson = (person) => {
     personService.remove(person.id)
       .then(response => {
+        console.log('RESPONSE: ', response);
         const filterList = persons.filter(per => per.id !== response.id);
         setPersons(filterList)
         setFilterValue('');
