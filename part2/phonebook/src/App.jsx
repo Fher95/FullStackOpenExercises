@@ -84,7 +84,7 @@ const App = () => {
         setFilteredPersons(filterList);
         showNotification(true, `Information of ${response.name} succesfully removed`);
       })
-      .catch(error => {
+      .catch(() => {
         showNotification(false, `Information of ${person.name} has already been removed from the server`);
       })
   }
