@@ -1,8 +1,9 @@
 import globals from 'globals'
 import js from '@eslint/js'
 import stylisticJs from '@stylistic/eslint-plugin'
+import { defineConfig } from "eslint/config";
 
-export default [
+export default defineConfig([
   js.configs.recommended,
   {
     files: ['**/*.js'],
@@ -30,4 +31,4 @@ export default [
   {
     ignores: ['dist/**'],
   },
-]
+])
