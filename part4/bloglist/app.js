@@ -7,15 +7,17 @@ const mongoose = require('mongoose')
 
 const app = express()
 
+logger.info('connecting to', config.MONGODB_URI)
+
 mongoose.connect(config.MONGODB_URI, { family: 4 })
   .then(() => logger.info('Connected to MongoDB'))
   .catch(error => logger.error('Error connecting to MongoDB: ', error.message))
 
 app.use(express.static('dist'))
-app.use(express.json)
+app.use(express.json())
 app.use(middleware.requestLogger)
 
-app.use('api/blogs', blogRouter)
+app.use('/api/blogs', blogRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

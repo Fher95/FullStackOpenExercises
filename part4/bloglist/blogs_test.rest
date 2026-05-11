@@ -1,0 +1,12 @@
+
+GET http://localhost:3001/api/blogs
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Titulo Prueba 2",
+  "author": "Fernando Gómez",
+  "url": "github.com/Fher95/FullStackOpenExercises",
+  "likes": 23
+}
