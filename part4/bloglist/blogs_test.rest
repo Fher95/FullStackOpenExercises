@@ -10,3 +10,15 @@ Content-Type: application/json
   "url": "github.com/Fher95/FullStackOpenExercises",
   "likes": 23
 }
+
+###
+PUT http://localhost:3001/api/blogs/6a034e454ce0da43d19e903e
+Content-Type: application/json
+
+{
+  "author": "Fernando Gómez3",
+  "likes": 3
+}
+
+###
+DELETE http://localhost:3001/api/blogs/6a034e454ce0da43d19e903e
