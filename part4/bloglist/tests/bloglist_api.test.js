@@ -53,11 +53,10 @@ test('a new created blog has 0 likes by default', async () => {
 })
 
 test('should return 400 status when trying to save a blog without title', async () => {
-  const response = await api.post('/api/blogs').send({
+  await api.post('/api/blogs').send({
     author: 'Fernando Gomez',
     url: 'Random url'
-  })
-  assert.equal(response.statusCode, 400)
+  }).expect(400)
 })
 
 // test('a specific blog is within the returned blogs', async () => {
