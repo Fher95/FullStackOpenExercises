@@ -1,6 +1,7 @@
-
+### Consulta todos los blogs
 GET http://localhost:3001/api/blogs
-###
+
+### Creacion de un nuevo blog
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
@@ -11,7 +12,7 @@ Content-Type: application/json
   "likes": 23
 }
 
-###
+### Actualizacion de un blog existente
 PUT http://localhost:3001/api/blogs/6a034e454ce0da43d19e903e
 Content-Type: application/json
 
@@ -20,5 +21,58 @@ Content-Type: application/json
   "likes": 3
 }
 
-###
+### Eliminacion de un blog
 DELETE http://localhost:3001/api/blogs/6a034e454ce0da43d19e903e
+
+
+### Get all users
+GET http://localhost:3001/api/users
+
+### Create an user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "user2",
+    "name": "Superuser",
+    "password": "salainen"
+}
+
+### Create a note with an user
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjZhMDQ3YThlNTU4N2ZiZjEyOWQyMjNjMCIsImlhdCI6MTc3ODY4ODU5NiwiZXhwIjoxNzc4NjkyMTk2fQ.UVvP_iAri7bKqxMDabdrqw4Yrw8f3QofeLPQOJ2WE8U
+
+{
+  "title": "Titulo Prueba 4",
+  "author": "Fernando Gómez",
+  "url": "github.com/Fher95/FullStackOpenExercises",
+  "likes": 23,
+  "userId": "6a048dac22fb9eaf39499a2b"
+}
+
+### Login with valid user
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "salainen"
+}
+
+### Creacion de un nuevo blog con Authorization token
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaWQiOiI2YTA0OGRhYzIyZmI5ZWFmMzk0OTlhMmIiLCJpYXQiOjE3Nzg2ODM1OTMsImV4cCI6MTc3ODY4NzE5M30.wR-r6XD3tzHawfT4fgf7j55tpFHMTLCYA5-u3qu3CPY
+
+{
+  "title": "Titulo Prueba 4",
+  "author": "Fernando Gómez",
+  "url": "github.com/Fher95/FullStackOpenExercises",
+  "likes": 23
+}
+
+### Deleting a blog with Authorization
+DELETE http://localhost:3001/api/blogs/6a048f564d9d0b175717324e
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaWQiOiI2YTA0OGRhYzIyZmI5ZWFmMzk0OTlhMmIiLCJpYXQiOjE3Nzg2ODM1OTMsImV4cCI6MTc3ODY4NzE5M30.wR-r6XD3tzHawfT4fgf7j55tpFHMTLCYA5-u3qu3CPY
