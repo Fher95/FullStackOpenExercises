@@ -33,9 +33,9 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "user2",
-    "name": "Superuser",
-    "password": "salainen"
+    "username": "Fher",
+    "name": "fher",
+    "password": "1234"
 }
 
 ### Create a note with an user

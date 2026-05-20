@@ -1,15 +1,15 @@
-const Login = ({ username, password, handleLogin, setPassword, setUsername }) => {
+const Login = ({ username, password, handleSubmit, handlePasswordChange, handleUsernameChange }) => {
   const submit = (event) => {
     event.preventDefault()
-    handleLogin()
+    handleSubmit()
   }
 
   const onUsernameChange = (event) => {
-    setUsername(event.target.value)
+    handleUsernameChange(event.target.value)
   }
 
   const onPasswordChange = (event) => {
-    setPassword(event.target.value)
+    handlePasswordChange(event.target.value)
   }
 
   return (

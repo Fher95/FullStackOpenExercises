@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import Login from './components/Login'
+import LoginForm from './components/LoginForm'
 import loginService from './services/login';
 import BlogForm from "./components/BlogForm"
 import Notification from './components/Notification';
+import Togglable from './components/Toggable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,6 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
+  const noteFormRef = useRef()
 
   const handleLoging = async () => {
     try {
@@ -32,9 +34,24 @@ const App = () => {
   const loginForm = () => (
     <>
       <Notification notification={notification} />
-      <Login username={username} password={password} handleLogin={handleLoging} setUsername={setUsername} setPassword={setPassword}></Login>
+      <LoginForm username={username} password={password} handleSubmit={handleLoging} handleUsernameChange={setUsername} handlePasswordChange={setPassword}></LoginForm>
     </>
   )
+
+  const onBlogSaved = () => {
+    noteFormRef.current?.toggleVisibility()
+    loadBlogs()
+  }
+
+  const blogForm = () => {
+    return (
+      <>
+        <Togglable buttonLabel="new blog" ref={noteFormRef}>
+          <BlogForm showNotification={showNotification} onBlogSaved={onBlogSaved} />
+        </Togglable>
+      </>
+    )
+  }
 
   const showNotification = (message, success) => {
     setNotification({ message, success })
@@ -45,7 +62,25 @@ const App = () => {
 
   const loadBlogs = async () => {
     const blogs = await blogService.getAll()
-    setBlogs(blogs)
+    setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+  }
+
+  const handleLike = async (blog) => {
+    try {
+      await blogService.update(blog.id, { ...blog, user: blog.user.id })
+      loadBlogs()
+    } catch (error) {
+      showNotification(error.response.data.error, false)
+    }
+  }
+
+  const handleDelete = async (blog) => {
+    try {
+      await blogService.remove(blog.id)
+      loadBlogs()
+    } catch (error) {
+      showNotification(error.response.data.error, false)
+    }
   }
 
   useEffect(() => {
@@ -68,9 +103,9 @@ const App = () => {
         <h2>blogs</h2>
         <Notification notification={notification} />
         <p>{user.name} logged in <button onClick={handleLoggout}>loggout</button></p>
-        <BlogForm showNotification={showNotification} loadBlogs={loadBlogs} />
+        {blogForm()}
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user} />
         )} </div>)
       }
     </div>

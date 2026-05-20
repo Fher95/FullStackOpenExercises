@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const BlogForm = ({ showNotification, loadBlogs }) => {
+const BlogForm = ({ showNotification, onBlogSaved }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -10,7 +10,7 @@ const BlogForm = ({ showNotification, loadBlogs }) => {
     event.preventDefault()
     try {
       const saveResult = await blogService.save({ title, author, url })
-      loadBlogs()
+      onBlogSaved()
       showNotification(`a new blog ${saveResult.title} by ${saveResult.author} added`, true)
     } catch (error) {
       showNotification(error.response?.data?.error, true)

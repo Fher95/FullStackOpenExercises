@@ -16,4 +16,14 @@ const save = async (blogData) => {
   return request.data
 }
 
-export default { getAll, save, setToken }
+const update = async (id, blogData) => {
+  const request = await axios.put(`${baseUrl}/${id}`, blogData, { headers: { Authorization: `Bearer ${token}` } })
+  return request.data
+}
+
+const remove = async (id) => {
+  const request = await axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+  return request
+}
+
+export default { getAll, save, setToken, update, remove }
