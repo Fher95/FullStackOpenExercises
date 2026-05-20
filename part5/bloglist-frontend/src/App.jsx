@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
-import loginService from './services/login';
-import BlogForm from "./components/BlogForm"
-import Notification from './components/Notification';
-import Togglable from './components/Toggable';
+import loginService from './services/login'
+import BlogForm from './components/BlogForm'
+import Notification from './components/Notification'
+import Togglable from './components/Toggable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -28,7 +28,7 @@ const App = () => {
 
   const handleLoggout = () => {
     window.localStorage.removeItem('user')
-    setUser(null);
+    setUser(null)
   }
 
   const loginForm = () => (
@@ -88,7 +88,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const userStr = window.localStorage.getItem('user');
+    const userStr = window.localStorage.getItem('user')
     if (userStr) {
       const userData = JSON.parse(userStr)
       setUser(userData)
