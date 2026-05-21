@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1779374936926" clover="3.2.0">
+  <project timestamp="1779374936926" name="All files">
+    <metrics statements="21" coveredstatements="17" conditionals="8" coveredconditionals="5" methods="8" coveredmethods="6" elements="37" coveredelements="28" complexity="0" loc="21" ncloc="21" packages="1" files="1" classes="1"/>
+    <file name="Blog.jsx" path="D:\Proyectos Programacion\FullStackOpenExercises\part5\bloglist-frontend\src\components\Blog.jsx">
+      <metrics statements="21" coveredstatements="17" conditionals="8" coveredconditionals="5" methods="8" coveredmethods="6"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="4" count="5" type="stmt"/>
+      <line num="6" count="5" type="stmt"/>
+      <line num="7" count="2" type="stmt"/>
+      <line num="10" count="5" type="stmt"/>
+      <line num="11" count="2" type="stmt"/>
+      <line num="12" count="2" type="stmt"/>
+      <line num="15" count="5" type="stmt"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="17" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="18" count="0" type="stmt"/>
+      <line num="22" count="5" type="stmt"/>
+      <line num="23" count="2" type="stmt"/>
+      <line num="27" count="2" type="cond" truecount="1" falsecount="1"/>
+      <line num="28" count="2" type="stmt"/>
+      <line num="30" count="0" type="stmt"/>
+      <line num="33" count="5" type="stmt"/>
+      <line num="34" count="2" type="stmt"/>
+      <line num="36" count="2" type="stmt"/>
+      <line num="42" count="5" type="stmt"/>
+      <line num="49" count="5" type="stmt"/>
+    </file>
+  </project>
+</coverage>

@@ -38,16 +38,22 @@ const App = () => {
     </>
   )
 
-  const onBlogSaved = () => {
-    noteFormRef.current?.toggleVisibility()
-    loadBlogs()
+  const onSaveBlog = async (blog) => {
+    try {
+      noteFormRef.current?.toggleVisibility()
+      const saveResult = await blogService.save(blog)
+      loadBlogs()
+      showNotification(`a new blog ${saveResult.title} by ${saveResult.author} added`, true)
+    } catch (error) {
+      showNotification(error.response?.data?.error, true)
+    }
   }
 
   const blogForm = () => {
     return (
       <>
         <Togglable buttonLabel="new blog" ref={noteFormRef}>
-          <BlogForm showNotification={showNotification} onBlogSaved={onBlogSaved} />
+          <BlogForm showNotification={showNotification} onSaveBlog={onSaveBlog} />
         </Togglable>
       </>
     )

@@ -32,7 +32,7 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
 
   const DetailSection = (blog) => {
     return (<>
-      <div>{blog.url}</div>
+      <div id='blogUrl'>{blog.url}</div>
       <div>{blog.likes} <button onClick={() => onLikes(blog)}>like</button></div>
       <div>{blog.user.name}</div>
       {RemoveButton(blog)}
