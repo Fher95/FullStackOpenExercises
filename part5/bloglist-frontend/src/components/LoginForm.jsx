@@ -17,10 +17,10 @@ const Login = ({ username, password, handleSubmit, handlePasswordChange, handleU
       <h2>Login in to application</h2>
       <form onSubmit={submit}>
         <div>
-          <label htmlFor="">Username <input type="text" value={username} onChange={onUsernameChange} /></label>
+          <label>Username <input type="text" value={username} onChange={onUsernameChange} /></label>
         </div>
         <div>
-          <label htmlFor="">Password <input type="password" value={password} onChange={onPasswordChange} /></label>
+          <label>Password <input type="password" value={password} onChange={onPasswordChange} /></label>
         </div>
         <button type="submit">login</button>
       </form>

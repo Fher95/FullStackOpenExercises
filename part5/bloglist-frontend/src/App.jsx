@@ -83,6 +83,7 @@ const App = () => {
   const handleDelete = async (blog) => {
     try {
       await blogService.remove(blog.id)
+      showNotification(`${blog.title} has been removed`, true)
       loadBlogs()
     } catch (error) {
       showNotification(error.response.data.error, false)

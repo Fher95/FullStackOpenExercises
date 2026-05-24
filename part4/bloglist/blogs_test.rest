@@ -33,10 +33,15 @@ POST http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username": "Fher",
-    "name": "fher",
-    "password": "1234"
+  "username": "mluukkai",
+  "password": "salainen"
 }
+
+# {
+#     "username": "Fher",
+#     "name": "fher",
+#     "password": "1234"
+# }
 
 ### Create a note with an user
 POST http://localhost:3001/api/blogs
