@@ -1,11 +1,8 @@
-import { useState } from 'react'
 const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
 
-  const [view, setView] = useState(false)
+  if (!blog) return null
 
-  const toggleDetails = () => {
-    setView(!view)
-  }
+  const showLikeButton = currentUser ? currentUser.username !== blog.user?.username : false
 
   const onLikes = (blog) => {
     blog.likes = blog.likes + 1
@@ -24,19 +21,10 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
       color: 'white',
       backgroundColor: 'blue'
     }
-    if (currentUser.username === blog.user.username) {
+    if (currentUser?.username === blog.user?.username) {
       return (<div><button style={btnRemoveStyle} onClick={() => onRemove(blog)}>remove</button></div>)
     }
     return null
-  }
-
-  const DetailSection = (blog) => {
-    return (<>
-      <div id='blogUrl'>{blog.url}</div>
-      <div>{blog.likes} <button onClick={() => onLikes(blog)}>like</button></div>
-      <div>{blog.user.name}</div>
-      {RemoveButton(blog)}
-    </>)
   }
 
   // const blogStyle = {
@@ -48,10 +36,13 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   // }
   return (
     <div className='blog-style'>
-      <div>
-        {blog.title} {blog.author} <button onClick={toggleDetails}>{view ? 'hide' : 'view'}</button>
-      </div>
-      {view && DetailSection(blog)}
+      <h2>
+        {blog.author}: {blog.title}
+      </h2>
+      <div id='blogUrl'><a href={blog.url} target='_blank'>{blog.url}</a> </div>
+      <div>likes {blog.likes} {showLikeButton && (<button onClick={() => onLikes(blog)}>like</button>)}</div>
+      <div>{blog.user?.name}</div>
+      {RemoveButton(blog)}
 
     </div>
   )

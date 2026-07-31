@@ -22,14 +22,14 @@ describe('Blog app', () => {
   })
 
   test('Login form is shown', async ({ page }) => {
-    const locator = page.getByText('Login in to application')
+    const locator = page.getByText('Login')
     await expect(locator).toBeVisible()
   })
 
   describe('Login', () => {
     test('succeeds with correct credentials', async ({ page }) => {
       await loginWith(page, 'mluukkai', 'salainen')
-      await expect(page.getByText('Matti Luukkainen logged in')).toBeVisible()
+      await expect(page.getByText('loggout')).toBeVisible()
     })
 
     test('fails with wrong credentials', async ({ page }) => {
@@ -45,6 +45,7 @@ describe('Blog app', () => {
   describe('When logged in', () => {
     beforeEach(async ({ page }) => {
       await loginWith(page, 'mluukkai', 'salainen')
+      await expect(page.getByText('loggout')).toBeVisible()
     })
 
     test('a new blog can be created', async ({ page }) => {
@@ -59,13 +60,10 @@ describe('Blog app', () => {
         await createBlog(page, 'Blog 2', 'Author 2', 'http://author2.com')
         await createBlog(page, 'To delete', 'Author to delete', 'http://todelete.com')
       })
-      test('a blog can be liked', async ({ page }) => {
-        const blogElement = page.getByText('Blog 1 Author 1')
-        await blogElement.getByRole('button', { name: 'view' }).click()
-        const expandedElement = page.getByText('Blog 1 Author 1').locator('..')
-        await expandedElement.getByRole('button', { name: 'like' }).click()
-        await expandedElement.getByText('1 like').waitFor()
-        await expect(page.getByText('1 like')).toBeVisible()
+      test('user cannot like their own blog', async ({ page }) => {
+        await page.getByText('Blog 1 Author 1').click()
+        await page.getByText('Author 1: Blog 1').waitFor()
+        await expect(page.getByRole('button', { name: 'like' })).toBeHidden();
       })
 
       test('confirm deletion', async ({ page }) => {
@@ -73,10 +71,8 @@ describe('Blog app', () => {
           console.log(`Dialog message: ${dialog.message()}`);
           await dialog.accept(); // Clicks "OK"
         });
-        const blogElement = page.getByText('To delete Author to delete')
-        await blogElement.getByRole('button', { name: 'view' }).click()
-        const expandedElement = page.getByText('To delete Author to delete').locator('..')
-        await expandedElement.getByRole('button', { name: 'remove' }).click()
+        await page.getByText('To delete Author to delete').click()
+        await page.getByRole('button', { name: 'remove' }).click()
         await page.getByText('To delete has been removed').waitFor()
         await expect(page.getByText('To delete has been removed')).toBeVisible()
       })
@@ -85,38 +81,47 @@ describe('Blog app', () => {
         await page.getByRole('button', { name: 'loggout' }).click()
         await loginWith(page, 'fher', '1234')
         await page.getByText('Blog 1').waitFor()
-        const blogElement = page.getByText('Blog 1')
-        await blogElement.getByRole('button', { name: 'view' }).click()
+        await page.getByText('Blog 1').click()
         const expandedElement = page.getByText('To delete Author to delete').locator('..')
         await expect(expandedElement.getByRole('button', { name: 'remove' })).toBeHidden();
       })
 
       test('blogs are arranged in the order according to the likes', async ({ page }) => {
 
+        // Loggout and login with another user
+        await page.getByRole('button', { name: 'loggout' }).click()
+        await loginWith(page, 'fher', '1234')
+
         // One like click to Blog 1
-        await page.getByText('Blog 1').getByRole('button', { name: 'view' }).click()
-        const expandedBlog1 = page.getByText('Blog 1').locator('..')
-        await expandedBlog1.getByRole('button', { name: 'like' }).click()
-        await expandedBlog1.getByText('1 like').waitFor()
+        await page.getByText('Blog 1').click()
+        await page.getByText('Author 1: Blog 1').waitFor()
+        await page.getByRole('button', { name: 'like' }).click()
+        await page.getByText('likes 1').waitFor()
+
+        // Go back to the main page
+        await page.goBack()
 
         // Two like clicks to Blog 2
-        await page.getByText('Blog 2 Author 2').getByRole('button', { name: 'view' }).click()
-        const expandedBlog2 = page.getByText('Blog 2').locator('..')
-        await expandedBlog2.getByRole('button', { name: 'like' }).click()
-        await expandedBlog2.getByText('1 like').waitFor()
-        await expandedBlog2.getByRole('button', { name: 'like' }).click()
-        await expandedBlog2.getByText('2 like').waitFor()
+        await page.getByText('Blog 2 Author 2').click()
+        await page.getByText('Author 2: Blog 2').waitFor()
+        await page.getByRole('button', { name: 'like' }).click()
+        await page.getByText('likes 1').waitFor()
+        await page.getByRole('button', { name: 'like' }).click()
+        await page.getByText('likes 2').waitFor()
 
-        const items = page.locator('.blog-style');
+        // Go back to the main page
+        await page.goBack()
+
+        // const items = page.locator('.blog-style');
+        const items = await page.getByRole('listitem');
         await expect(items).toHaveText([
-          'Blog 2 Author 2 hidehttp://author2.com2 likeMatti Luukkainenremove',
-          'Blog 1 Author 1 hidehttp://author1.com1 likeMatti Luukkainenremove',
-          'To delete Author to delete view'
+          'Blog 2 Author 2',
+          'Blog 1 Author 1',
+          'To delete Author to delete'
         ]);
       })
 
     })
 
   })
-
 })
