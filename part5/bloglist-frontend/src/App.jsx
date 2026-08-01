@@ -11,6 +11,7 @@ import {
   Routes, Route, Link, useMatch
 } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { Container, AppBar, Toolbar, Button, Typography } from '@mui/material'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -108,18 +109,19 @@ const App = () => {
     }
   }, [])
 
-  const padding = {
-    padding: 5
-  }
+  const style = { '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' } }
 
   return (
-    <>
-      <div>
-        <Link style={padding} to="/blogs">Blogs</Link>
-        {!user && <Link style={padding} to="/login">Login</Link>}
-        {user && <Link style={padding} to="/new-blog">new blog</Link>}
-        {user && <button onClick={handleLoggout}>loggout</button>}
-      </div>
+    <Container>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h5" sx={{ flexGrow: 1 }} >Blog App</Typography>
+          <Button color="inherit" component={Link} to="/blogs" sx={style}>Blogs</Button>
+          {!user && <Button color="inherit" component={Link} to="/login" sx={style}>Login</Button>}
+          {user && <Button color="inherit" component={Link} to="/new-blog" sx={style}>new blog</Button>}
+          {user && <Button color="inherit" onClick={handleLoggout} sx={style}>logout</Button>}
+        </Toolbar>
+      </AppBar>
       <Notification notification={notification} />
       <Routes>
         <Route path='/blogs' element={<BlogList blogs={blogs} />} />
@@ -127,7 +129,7 @@ const App = () => {
         <Route path='/new-blog' element={<BlogForm showNotification={showNotification} onSaveBlog={onSaveBlog} />} />
         <Route path='/login' element={<LoginForm username={username} password={password} handleSubmit={handleLoging} handleUsernameChange={setUsername} handlePasswordChange={setPassword}></LoginForm>} />
       </Routes>
-    </>
+    </Container>
   )
 }
 

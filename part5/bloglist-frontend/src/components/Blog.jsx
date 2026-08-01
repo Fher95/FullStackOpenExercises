@@ -1,3 +1,4 @@
+import { Paper, Typography, Button } from '@mui/material'
 const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
 
   if (!blog) return null
@@ -17,34 +18,39 @@ const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   }
 
   const RemoveButton = (blog) => {
-    const btnRemoveStyle = {
-      color: 'white',
-      backgroundColor: 'blue'
-    }
     if (currentUser?.username === blog.user?.username) {
-      return (<div><button style={btnRemoveStyle} onClick={() => onRemove(blog)}>remove</button></div>)
+      return (<div><Button variant='outlined' color='error' onClick={() => onRemove(blog)}>remove</Button></div>)
     }
     return null
   }
 
-  // const blogStyle = {
-  //   paddingTop: 10,
-  //   paddingLeft: 2,
-  //   border: 'solid',
-  //   borderWidth: 1,
-  //   marginBottom: 5
-  // }
-  return (
-    <div className='blog-style'>
-      <h2>
-        {blog.author}: {blog.title}
-      </h2>
-      <div id='blogUrl'><a href={blog.url} target='_blank'>{blog.url}</a> </div>
-      <div>likes {blog.likes} {showLikeButton && (<button onClick={() => onLikes(blog)}>like</button>)}</div>
-      <div>{blog.user?.name}</div>
-      {RemoveButton(blog)}
+  const LikeButton = (blog) => {
+    if (showLikeButton) { return <Button variant='outlined' onClick={() => onLikes(blog)}>like</Button> }
+    return null
+  }
 
-    </div>
+  return (
+    <Paper elevation={3} style={{ padding: '10px', marginTop: '10px' }}>
+      <Typography variant="h4">
+        {blog.title}
+      </Typography>
+      <Typography variant="subtitle1" color='textSecondary'>
+        by {blog.author}
+      </Typography>
+      <Typography variant="body1" style={{ marginTop: '8px' }}><a href={blog.url} target='_blank'>{blog.url}</a></Typography>
+      <Typography variant="subtitle2" style={{ marginTop: '10px' }} color="textSecondary">
+        Added by {blog.user?.name}
+      </Typography>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+        <Typography variant="h6">
+          {blog.likes} likes
+        </Typography>
+        {LikeButton(blog)}
+        {RemoveButton(blog)}
+      </div>
+
+
+    </Paper>
   )
 }
 

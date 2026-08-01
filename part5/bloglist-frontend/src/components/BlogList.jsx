@@ -9,7 +9,6 @@ const BlogList = ({ blogs }) => {
         <li key={blog.id}>
           <Link to={`/blogs/${blog.id}`}>{blog.title + ' ' + blog.author}</Link>
         </li>
-        // <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} currentUser={user} />
       )}
     </ul>
   </>)

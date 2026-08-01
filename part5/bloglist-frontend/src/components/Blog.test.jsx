@@ -21,14 +21,18 @@ test('renders blog title and author', () => {
 
   render(<Blog blog={blog} />)
 
-  const element = screen.getByText(
-    'Linus Torvals: Blog Title'
+  const title = screen.getByText(
+    'Blog Title'
+  )
+  const author = screen.getByText(
+    'by Linus Torvals'
   )
 
   const ulrElement = screen.queryByText('noUrl')
 
 
-  expect(element).toBeDefined()
+  expect(title).toBeDefined()
+  expect(author).toBeDefined()
   expect(ulrElement).not.toBeNull()
 })
 
@@ -91,7 +95,7 @@ test('Author user cannot like his own blog', async () => {
   }
   const currentUser = { name: 'anotheruser', username: 'user' }
   render(<Blog blog={blog} currentUser={currentUser} />)
-  const likes = screen.getByText('likes 2')
+  const likes = screen.getByText('2 likes')
   console.log(likes.innerHTML)
   expect(likes.getElementsByTagName('button')).toHaveLength(0)
 })
@@ -105,7 +109,7 @@ test('Not authenticated users cannot like or remove blogs', async () => {
     user: { name: 'superuser', username: 'user' }
   }
   render(<Blog blog={blog} />)
-  const likes = screen.getByText('likes 2')
+  const likes = screen.getByText('2 likes')
   const removeButton = screen.queryByText('remove')
   expect(likes.getElementsByTagName('button')).toHaveLength(0)
   expect(removeButton).not.toBeInTheDocument()

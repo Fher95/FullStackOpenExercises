@@ -1,3 +1,4 @@
+import { TextField, Button } from '@mui/material'
 const Login = ({ username, password, handleSubmit, handlePasswordChange, handleUsernameChange }) => {
   const submit = (event) => {
     event.preventDefault()
@@ -15,14 +16,10 @@ const Login = ({ username, password, handleSubmit, handlePasswordChange, handleU
   return (
     <div>
       <h2>Login in to application</h2>
-      <form onSubmit={submit}>
-        <div>
-          <label>Username <input type="text" value={username} onChange={onUsernameChange} /></label>
-        </div>
-        <div>
-          <label>Password <input type="password" value={password} onChange={onPasswordChange} /></label>
-        </div>
-        <button type="submit">login</button>
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '300px' }}>
+        <TextField label="Username" value={username} onChange={onUsernameChange} variant="standard" />
+        <TextField label="Password" type="password" value={password} onChange={onPasswordChange} variant="standard" />
+        <Button type="submit" variant="contained" color="primary">login</Button>
       </form>
     </div>
   )

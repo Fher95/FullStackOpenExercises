@@ -8,9 +8,9 @@ test('<BlogForm /> updates parent state and calls onSaveBlog', async () => {
 
   render(<BlogForm onSaveBlog={createBlog} />)
 
-  const title = screen.getByLabelText('title')
-  const author = screen.getByLabelText('author')
-  const url = screen.getByLabelText('url')
+  const title = screen.getByLabelText('Title')
+  const author = screen.getByLabelText('Author')
+  const url = screen.getByLabelText('URL')
 
   const sendButton = screen.getByText('create')
 
