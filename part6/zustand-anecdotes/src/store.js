@@ -1,36 +1,40 @@
 
 import { create } from 'zustand'
+import anecdoteService from './services/anecdotes'
+import { setNotification } from './notification.store'
 
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const asObject = anecdote => ({
-  content: anecdote,
-  id: getId(),
-  votes: 0
-})
-
-const voteAndSort = (state, id) => {
-  const newList = state.anecdotes.map(element => element.id === id ? { ...element, votes: element.votes + 1 } : element);
-  newList.sort((a, b) => b.votes - a.votes);
-  return { anecdotes: newList }
+const showNotification = message => {
+  setNotification(message)
 }
 
-const useAnecdoteStore = create((set) => ({
-  anecdotes: anecdotesAtStart.map(asObject),
+const useAnecdoteStore = create((set, get) => ({
+  anecdotes: [],
   filter: '',
   actions: {
-    add: anecdote => set(state => ({ anecdotes: [...state.anecdotes, asObject(anecdote)] })),
-    vote: id => set(state => voteAndSort(state, id)),
-    setFilter: value => set(() => ({ filter: value }))
+    add: async (anecdote) => {
+      const added = await anecdoteService.create({ content: anecdote, votes: 0 })
+      set(state => ({ anecdotes: [...state.anecdotes, added] }))
+      showNotification(`Added anecdote: ${added.content}`)
+    },
+    vote: async (id) => {
+      const voted = get().anecdotes.find(anecdote => anecdote.id == id)
+      const updated = await anecdoteService.update(id, { ...voted, votes: voted.votes + 1 })
+      const newList = get().anecdotes.map(anecdote => anecdote.id == id ? updated : anecdote)
+      newList.sort((a, b) => b.votes - a.votes);
+      set(() => ({ anecdotes: newList }))
+      showNotification(`You voted '${updated.content}'`)
+    },
+    setFilter: value => set(() => ({ filter: value })),
+    initialize: async () => {
+      const anecdotes = await anecdoteService.getAll()
+      anecdotes.sort((a, b) => b.votes - a.votes)
+      set(() => ({ anecdotes }))
+    },
+    remove: async (id) => {
+      const removed = await anecdoteService.remove(id)
+      console.log('EL REMOVED:', removed)
+      set(() => ({ anecdotes: get().anecdotes.filter(anecdote => anecdote.id !== removed.id) } ))
+    }
   },
 }))
 
