@@ -7,6 +7,7 @@ const AnecdoteForm = () => {
     const onCreateNew = (event) => {
         event.preventDefault()
         add(event.target.anecdote.value)
+        event.target.reset()
     }
 
     return (<>
