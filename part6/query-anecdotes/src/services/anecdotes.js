@@ -17,7 +17,8 @@ export const createNew = async (newAnecdote) => {
         body: JSON.stringify(newAnecdote),
     })
     if (!response.ok) {
-        throw new Error('Failed to create new anecdote')
+        const errBody = await response.json()
+        throw new Error(errBody.error || 'Failed to create anecdote')
     }
     return await response.json()
 }

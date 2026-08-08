@@ -1,7 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getAll, createNew, update } from '../services/anecdotes'
+import useNotification from './useNotification'
 
 export const useAnecdotes = () => {
+
+    const  { showNotification } = useNotification()
 
     const queryClient = useQueryClient()
 
@@ -17,13 +20,18 @@ export const useAnecdotes = () => {
         onSuccess: (newAnecdote) => {
             const anecdotes = queryClient.getQueryData(['anecdotes'])
             queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+            showNotification(`added a new anecdote: ${newAnecdote.content}`)
+        },
+        onError: (err) => {
+            showNotification(`${err.message}`)
         }
     })
 
     const updateAnecdoteMutation = useMutation({
         mutationFn: anecdote => (update(anecdote.id, anecdote)),
-        onSuccess: () => {
+        onSuccess: (updatedAnecdote) => {
             queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+            showNotification(`anecdote '${updatedAnecdote.content}' voted`)
         }
     })
 
